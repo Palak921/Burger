@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
@@ -7,7 +6,8 @@ import ContactData from './ContactData/ContactData';
 class Checkout extends Component {
     state = {
         ingredients: null,
-        price: 0
+        price: 0,
+        route: false
     }
 
     componentWillMount() {
@@ -25,24 +25,52 @@ class Checkout extends Component {
         this.setState({ ingredients: ingredients, totalPrice: price });
     }
 
+
+    componentDidUpdate() {
+        console.log(this.props.totalPrice);
+    }
+
     checkoutCancelledHandler = () => {
         this.props.history.goBack();
     }
 
     checkoutContinuedHandler = () => {
-        this.props.history.replace('/checkout/contact-data');
+        this.setState({ route: true })
+        // this.props.history.replace('/checkout/contactData');
     }
 
     render() {
+        console.log(this.props);
+        let contact = null;
+        if (this.state.route) {
+
+            contact = <ContactData
+                ingredients={this.state.ingredients}
+                price={this.state.price}
+                {...this.props} />
+        }
         return (
             <div>
+
                 <CheckoutSummary
                     ingredients={this.state.ingredients}
                     checkoutCancelled={this.checkoutCancelledHandler}
                     checkoutContinued={this.checkoutContinuedHandler} />
-                <Route
-                    path={this.props.match.path + '/contact-data'}
-                    render={(props) => (<ContactData ingredients={this.state.ingredients} price={this.state.totalPrice} {...props} />)} />
+                <h1>{this.props.price}</h1>
+
+                {contact}
+                {/* <Route
+                    path={this.props.match.path + '/contactData'}
+                    render={(props) => {
+                        return (<ContactData
+                            ingredients={this.state.ingredients}
+                            price={this.state.totalPrice}
+                            {...props} />)
+
+                    }}
+
+                /> */}
+
             </div>
         );
     }

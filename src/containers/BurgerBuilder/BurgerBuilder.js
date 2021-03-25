@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import Auxiliary from '../../hoc/Auxiliary';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
@@ -83,34 +82,14 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => {
-        //Spinner
-        // this.setState({ loading: true });
-        // const order = {
-        //     ingredients: this.state.ingredients,
-        //     price: this.state.totalPrice,
-        //     customerData: {
-        //         name: 'Palak Parihar',
-        //         address: {
-        //             street: '92 A',
-        //             zipcode: '45354'
-        //         }
-        //     }
-        // }
-        // axios.post('/orders.json', order)
-        //     .then(response => {
-        //         this.setState({ loading: false, purchasing: false });
-        //         console.log(response);
-        //         // console.log(this.state.loading);
-        //     })
-        //     .catch(error => {
-        //         this.setState({ error: error })
-        //     })
+        
         console.log(this.props);
 
         const queryParams = [];
         for (let i in this.state.ingredients) {
             queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]))
         }
+        
         const queryString = queryParams.join('&');
         this.props.history.push({
             pathname: '/checkout',
@@ -167,6 +146,7 @@ class BurgerBuilder extends Component {
 
         return (
             <Auxiliary>
+                
                 <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
                     {orderSummary}
                 </Modal>
